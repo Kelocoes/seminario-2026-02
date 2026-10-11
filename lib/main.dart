@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:seminario_2026_02/screens/layout_demo_screen.dart';
+import 'package:seminario_2026_02/screens/sandbox_demo_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-      home: const LayoutDemoScreen(),
+      home: const SandboxDemoScreen(),
     );
   }
 }
