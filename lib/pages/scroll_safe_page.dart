@@ -32,8 +32,7 @@ class ScrollSafePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Banner explicativo sobre el desborde (Overflow)
-            // ContadorWidget(),
-            ContactAgenda(),
+            ContadorWidget(),
           ],
         ),
       ),

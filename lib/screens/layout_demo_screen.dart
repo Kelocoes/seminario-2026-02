@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:seminario_2026_02/pages/agenda_contactos.dart';
 import 'package:seminario_2026_02/pages/linear_layout_page.dart';
 import 'package:seminario_2026_02/pages/box_composition_page.dart';
-import 'package:seminario_2026_02/pages/scroll_safe_page.dart';
 
 /// ============================================================================
 /// CONVENCIÓN SCREEN frente a PAGE:
@@ -30,9 +30,9 @@ class LayoutDemoScreen extends StatelessWidget {
         ),
         body: const TabBarView(
           children: [
+            ContactAgenda(),
             LinearLayoutPage(),
             BoxCompositionPage(),
-            ScrollSafePage(),
           ],
         ),
         bottomNavigationBar: const Material(
