@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:seminario_2026_02/routes/app_routes.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -18,7 +19,11 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void _login() {}
+  void _login() {
+    debugPrint("Validando credenciales!");
+
+    Navigator.pushNamedAndRemoveUntil(context, AppRoutes.routines, (route) => false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,10 +79,7 @@ class _LoginPageState extends State<LoginPage> {
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 14.0),
             ),
-            child: const Text(
-              'Ingresar',
-              style: TextStyle(fontSize: 16.0),
-            ),
+            child: const Text('Ingresar', style: TextStyle(fontSize: 16.0)),
           ),
         ],
       ),

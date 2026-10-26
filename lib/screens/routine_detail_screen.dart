@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:seminario_2026_02/model/mock_data.dart';
 import 'package:seminario_2026_02/model/routine.dart';
 import 'package:seminario_2026_02/pages/routine_detail_page.dart';
 
@@ -10,7 +9,7 @@ class RoutineDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentRoutine = routine ?? initialRoutines.first;
+    final currentRoutine = ModalRoute.of(context)!.settings.arguments as Routine;
 
     return Scaffold(
       appBar: AppBar(

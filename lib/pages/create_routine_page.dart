@@ -40,6 +40,8 @@ class _CreateRoutinePageState extends State<CreateRoutinePage> {
     );
 
     debugPrint('Rutina guardada: ${newRoutine.name}');
+
+    Navigator.pop(context, newRoutine);
   }
 
   @override

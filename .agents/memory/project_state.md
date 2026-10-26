@@ -2,9 +2,9 @@
 
 ## 1. Resumen Ejecutivo
 - **Nombre del Proyecto**: `seminario_2026_02` (Aplicación de Actividad Física - Universidad Icesi)
-- **Rama Actual de Trabajo**: `week-13/navigation-start`
+- **Rama Actual de Trabajo**: `week-13/navigation-end`
 - **Plataforma Objetivo**: Flutter (Soporte multiplataforma: Móvil, Web y Escritorio)
-- **Estado General**: Preparación del proyecto base para las sesiones de navegación imperativa (Navigator 1.0 con pila y rutas nombradas) y navegación horizontal por pestañas (NavigationBar / IndexedStack). Nomenclatura 100% en inglés en código, modelos, pantallas, páginas y widgets.
+- **Estado General**: Implementación completa de la primera sesión de navegación imperativa clásica (Navigator 1.0 con pila, rutas nombradas, envío de argumentos, captura asíncrona de resultados y purga de pila).
 
 ---
 
@@ -15,37 +15,25 @@
 
 ---
 
-## 3. Estructura de UI y Modelos Implementada
-
-### Modelos (`lib/model/`)
-- `Exercise` (`lib/model/exercise.dart`): Representa un ejercicio con `name`, `type` y `durationMinutes`.
-- `Routine` (`lib/model/routine.dart`): Representa una rutina con `name`, `description` y `exercises`.
-- `mock_data.dart` (`lib/model/mock_data.dart`): Catálogo inicial de ejercicios preexistentes (`availableExercises`) y rutinas (`initialRoutines`).
-
-### Páginas (`lib/pages/` - Cuerpos sin Scaffold, listas para Pestañas / IndexedStack)
-- `LoginPage` (`lib/pages/login_page.dart`): Formulario de ingreso de credenciales.
-- `RoutinesPage` (`lib/pages/routines_page.dart`): Lista visual de rutinas con `RoutineCard` y botón para crear rutina.
-- `ExercisesPage` (`lib/pages/exercises_page.dart`): Catálogo filtrable de ejercicios con `TextField` interactivo (ideal para comprobar preservación de estado con `IndexedStack`).
-- `ProfilePage` (`lib/pages/profile_page.dart`): Perfil de usuario con avatar, métricas y botón de cerrar sesión.
-- `RoutineDetailPage` (`lib/pages/routine_detail_page.dart`): Detalle de la rutina y sus ejercicios.
-- `CreateRoutinePage` (`lib/pages/create_routine_page.dart`): Formulario para crear rutina con selección de ejercicios.
-
-### Pantallas (`lib/screens/` - Con Scaffold para previsualización independiente o rutas)
-- `LoginScreen` (`lib/screens/login_screen.dart`): Pantalla de login.
-- `RoutinesScreen` (`lib/screens/routines_screen.dart`): Pantalla de lista de rutinas.
-- `ExercisesScreen` (`lib/screens/exercises_screen.dart`): Pantalla del catálogo de ejercicios.
-- `ProfileScreen` (`lib/screens/profile_screen.dart`): Pantalla de perfil de usuario.
-- `RoutineDetailScreen` (`lib/screens/routine_detail_screen.dart`): Pantalla de detalle jerárquico.
-- `CreateRoutineScreen` (`lib/screens/create_routine_screen.dart`): Pantalla de creación de rutina.
-
-### Catálogo de Widgets Reutilizables (`lib/widgets/`)
-- `RoutineCard` (`lib/widgets/routine_card.dart`): Tarjeta para visualizar `name` y `description` de una rutina.
-- `ExerciseTile` (`lib/widgets/exercise_tile.dart`): Ficha de lista para un ejercicio con avatar de duración.
-- `StatItem` (`lib/widgets/stat_item.dart`): Indicador de métricas (número y etiqueta) para perfil.
+## 3. Navegación y Rutas Implementadas (`lib/routes/app_routes.dart`)
+- `AppRoutes.login` (`/`): [`LoginScreen`](file:///C:/Users/GlobE/Desktop/Docencia%20Icesi/Seminario%20de%20Ingenieria%20de%20Software/2026%2002/seminario-2026-02/lib/screens/login_screen.dart).
+- `AppRoutes.routines` (`/routines`): [`RoutinesScreen`](file:///C:/Users/GlobE/Desktop/Docencia%20Icesi/Seminario%20de%20Ingenieria%20de%20Software/2026%2002/seminario-2026-02/lib/screens/routines_screen.dart).
+- `AppRoutes.routineDetail` (`/routine-detail`): [`RoutineDetailScreen`](file:///C:/Users/GlobE/Desktop/Docencia%20Icesi/Seminario%20de%20Ingenieria%20de%20Software/2026%2002/seminario-2026-02/lib/screens/routine_detail_screen.dart).
+- `AppRoutes.createRoutine` (`/create-routine`): [`CreateRoutineScreen`](file:///C:/Users/GlobE/Desktop/Docencia%20Icesi/Seminario%20de%20Ingenieria%20de%20Software/2026%2002/seminario-2026-02/lib/screens/create_routine_screen.dart).
 
 ---
 
-## 4. Estado de Pruebas y Calidad
+## 4. Flujos Clave de Navegación
+1. **Purga de la Pila en Login**:
+   `Navigator.pushNamedAndRemoveUntil(context, AppRoutes.routines, (route) => false)`.
+2. **Paso de Datos hacia Adelante (*Forward Data*)**:
+   `Navigator.pushNamed(context, AppRoutes.routineDetail, arguments: routine)` y extracción con `ModalRoute.of(context)!.settings.arguments as Routine`.
+3. **Captura Asíncrona (*Backward Data*) y `mounted`**:
+   `final result = await Navigator.pushNamed(context, AppRoutes.createRoutine)` validando `if (!mounted) return;` y `if (result is Routine)` tras el retorno de `Navigator.pop(context, newRoutine)`.
+
+---
+
+## 5. Estado de Pruebas y Calidad
 - `flutter test`: 100% pasando (smoke test de arranque en `test/widget_test.dart`).
 - `flutter analyze`: 0 problemas.
 - Auditoría de arquitectura y linter: Todo conforme con las reglas del repositorio.

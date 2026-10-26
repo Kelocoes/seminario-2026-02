@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:seminario_2026_02/model/mock_data.dart';
 import 'package:seminario_2026_02/model/routine.dart';
+import 'package:seminario_2026_02/routes/app_routes.dart';
 import 'package:seminario_2026_02/widgets/routine_card.dart';
 
 class RoutinesPage extends StatefulWidget {
@@ -13,9 +14,27 @@ class RoutinesPage extends StatefulWidget {
 class _RoutinesPageState extends State<RoutinesPage> {
   final List<Routine> _routines = List<Routine>.from(initialRoutines);
 
-  void _openDetail(Routine routine) {}
+  void _openDetail(Routine routine) {
+    Navigator.pushNamed(context, AppRoutes.routineDetail, arguments: routine);
+  }
 
-  void _createRoutine() {}
+  void _createRoutine() async {
+    final result = await Navigator.pushNamed(context, AppRoutes.createRoutine);
+
+    if (!mounted) return;
+
+    if (result is Routine) {
+      setState(() {
+        _routines.add(result);
+      });
+
+      ScaffoldMessenger.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(
+          SnackBar(content: Text('Rutina "${result.name}" creada con éxito')),
+        );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

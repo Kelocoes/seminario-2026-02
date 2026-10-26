@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:seminario_2026_02/screens/login_screen.dart';
+import 'package:seminario_2026_02/routes/app_routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +17,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const LoginScreen(),
+      initialRoute: AppRoutes.login,
+      routes: AppRoutes.routes
     );
   }
 }
