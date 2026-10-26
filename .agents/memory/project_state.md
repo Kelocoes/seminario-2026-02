@@ -2,62 +2,47 @@
 
 ## 1. Resumen Ejecutivo
 - **Nombre del Proyecto**: `seminario_2026_02` (Aplicación de Actividad Física - Universidad Icesi)
-- **Rama Actual de Trabajo**: `week-10/agents-intro`
+- **Rama Actual de Trabajo**: `week-13/navigation-start`
 - **Plataforma Objetivo**: Flutter (Soporte multiplataforma: Móvil, Web y Escritorio)
-- **Estado General**: Fase inicial de diseño de arquitectura base, andamiaje de pantallas y desarrollo del sistema de componentes reutilizables de UI.
+- **Estado General**: Preparación del proyecto base para la sesión de navegación imperativa con Navigator 1.0 (rutas nombradas, paso de argumentos, retorno de resultados y purge de pila). Nomenclatura 100% en inglés en código, modelos, pantallas, páginas y widgets.
 
 ---
 
 ## 2. Dependencias y Configuración Clave
 - **SDK**: Dart ^3.12.2 / Flutter SDK
-- **Backend / BaaS**: `supabase_flutter: ^2.17.2` (Preparado para autenticación y persistencia)
-- **Iconos**: `cupertino_icons: ^1.0.8` y Material Icons incluidos por defecto
-- **Análisis de Código**: `flutter_lints: ^6.0.0` activo y validado
+- **Análisis de Código**: `flutter_lints: ^6.0.0` activo con 0 advertencias
+- **Auditoría de Arquitectura**: 100% de cumplimiento en jerarquía Screen (Scaffold) vs Page (sin Scaffold) vs Widget
 
 ---
 
-## 3. Estructura de UI Implementada
+## 3. Estructura de UI y Modelos Implementada
+
+### Modelos (`lib/model/`)
+- `Exercise` (`lib/model/exercise.dart`): Representa un ejercicio con `name`, `type` y `durationMinutes`.
+- `Routine` (`lib/model/routine.dart`): Representa una rutina con `name`, `description` y `exercises`.
+- `mock_data.dart` (`lib/model/mock_data.dart`): Catálogo inicial de ejercicios preexistentes (`availableExercises`) y rutinas (`initialRoutines`).
 
 ### Pantallas y Andamiaje (`lib/screens/` y `lib/pages/`)
-- `LayoutDemoScreen` (`lib/screens/layout_demo_screen.dart`):
-  - Pantalla principal que provee el andamiaje con `Scaffold`, `AppBar`, `DefaultTabController` y `TabBar`.
-  - Coordina de forma 100% declarativa y stateless las vistas secundarias.
-- `LinearLayoutPage` (`lib/pages/linear_layout_page.dart`): Demostración de flujos verticales y horizontales (`Column`, `Row`, `Expanded`, `Spacer`).
-- `BoxCompositionPage` (`lib/pages/box_composition_page.dart`): Demostración de composición de cajas, bordes, sombras y padding.
-- `ScrollSafePage` (`lib/pages/scroll_safe_page.dart`): Demostración de prevención de desbordamientos con `SingleChildScrollView` y `ListView`.
-- `PageExample` (`lib/pages/page_example.dart`): Vista de muestrario (*sandbox*) que integra todos los widgets del sistema de diseño.
+- **Login**:
+  - `LoginScreen` (`lib/screens/login_screen.dart`): Provee `Scaffold` y `AppBar`.
+  - `LoginPage` (`lib/pages/login_page.dart`): Formulario de ingreso sin Scaffold.
+- **Lista de Rutinas**:
+  - `RoutinesScreen` (`lib/screens/routines_screen.dart`): Provee `Scaffold`, `AppBar` y `FloatingActionButton`.
+  - `RoutinesPage` (`lib/pages/routines_page.dart`): Lista visual de rutinas con `RoutineCard` y botón para crear rutina.
+- **Detalle de Rutina**:
+  - `RoutineDetailScreen` (`lib/screens/routine_detail_screen.dart`): Provee `Scaffold` y `AppBar`.
+  - `RoutineDetailPage` (`lib/pages/routine_detail_page.dart`): Muestra la información de la rutina y la lista de ejercicios asignados con `ExerciseTile`.
+- **Creación de Rutina**:
+  - `CreateRoutineScreen` (`lib/screens/create_routine_screen.dart`): Provee `Scaffold` y `AppBar`.
+  - `CreateRoutinePage` (`lib/pages/create_routine_page.dart`): Formulario para crear rutina y seleccionar ejercicios existentes.
 
 ### Catálogo de Widgets Reutilizables (`lib/widgets/`)
-- `DescriptionCard` (`lib/widgets/description_card.dart`):
-  - Tarjeta con título, descripción, icono temático, etiqueta o badge, acción configurable y soporte de clic táctil.
-- `UserProfileCard` (`lib/widgets/user_profile_card.dart`):
-  - Tarjeta de usuario con avatar en red, indicador de estado de conexión ("En línea") e icono de chat.
-- `NotificationBanner` (`lib/widgets/notification_banner.dart`):
-  - Banner para alertas y comunicados oficiales con icono en contenedor circular y botón de cierre.
-- `StatusBadge` (`lib/widgets/status_badge.dart`):
-  - Insignia con punto cromático de estado (ej. "En progreso") y etiqueta descriptiva.
-- `ActionButton` (`lib/widgets/action_button.dart`):
-  - Botón elevado estilizado con icono y texto.
-- `MyFirstWidget` y `WidgetProps`:
-  - Componentes didácticos introductorios para entender propiedades y construcción básica.
+- `RoutineCard` (`lib/widgets/routine_card.dart`): Tarjeta para visualizar `name` y `description` de una rutina con evento `onTap`.
+- `ExerciseTile` (`lib/widgets/exercise_tile.dart`): Componente de lista que muestra `durationMinutes`, `name` y `type` de un ejercicio.
 
 ---
 
 ## 4. Estado de Pruebas y Calidad
-- Pruebas automatizadas en `test/`:
-  - `test/description_card_test.dart`: Valida renderizado de texto, presencia de icono/badge y despacho de eventos de clic.
-  - `test/widget_test.dart`: Prueba de humo de arranque para la pantalla principal `LayoutDemoScreen`.
-- Verificación actual:
-  - `flutter test`: 100% de pruebas pasando sin fallos.
-  - `flutter analyze`: Analizado y verificado sin errores sintácticos.
-
----
-
-## 5. Próximos Pasos Prioritarios
-1. **Configuración de Supabase**: Inicializar la conexión a la base de datos de Supabase en `main.dart` para soportar autenticación y tablas maestras.
-2. **Definición de Modelos de Datos**:
-   - Modelo de `Usuario` (con rol: estudiante, entrenador, admin).
-   - Modelo de `Ejercicio` (nombre, categoría, dificultad, URL de video).
-   - Modelo de `Rutina` (colección de ejercicios estructurados).
-3. **Flujo de Autenticación**: Construir la pantalla de inicio de sesión institucional y protección de rutas.
-4. **Pantalla de Catálogo de Ejercicios**: Integrar la tarjeta `DescriptionCard` para listar los ejercicios categorizados.
+- `flutter test`: 100% pasando (smoke test de arranque en `test/widget_test.dart`).
+- `flutter analyze`: 0 problemas.
+- Auditoría de arquitectura y linter: Todo conforme con las reglas del repositorio.
