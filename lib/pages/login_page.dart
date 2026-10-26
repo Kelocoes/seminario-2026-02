@@ -22,7 +22,7 @@ class _LoginPageState extends State<LoginPage> {
   void _login() {
     debugPrint("Validando credenciales!");
 
-    Navigator.pushNamedAndRemoveUntil(context, AppRoutes.routines, (route) => false);
+    Navigator.pushNamedAndRemoveUntil(context, AppRoutes.main, (route) => false);
   }
 
   @override

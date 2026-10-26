@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:seminario_2026_02/routes/app_routes.dart';
 import 'package:seminario_2026_02/widgets/stat_item.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
-  void _logout() {}
+  void _logout(BuildContext context) {
+    Navigator.pushNamedAndRemoveUntil(context, AppRoutes.login, (route) => false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +58,7 @@ class ProfilePage extends StatelessWidget {
         ),
         const SizedBox(height: 32.0),
         OutlinedButton.icon(
-          onPressed: _logout,
+          onPressed: () => _logout(context),
           icon: const Icon(Icons.logout, color: Colors.red),
           label: const Text(
             'Cerrar Sesión',
