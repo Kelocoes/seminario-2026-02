@@ -17,6 +17,32 @@ El directorio [`.agents/`](./.agents/) organiza el conocimiento operativo y las 
 *   **[Convenciones (`./.agents/conventions/`)](./.agents/conventions/)**  
     Espacio reservado para definir los lineamientos arquitectonicos, estandares de codigo para Flutter y Dart, buenas practicas de desarrollo, manejo de estado, pruebas y politicas de control de versiones.
 
+*   **Artefactos del flujo Spec-Driven (`./.agents/specs/`, `./.agents/plans/`, `./.agents/tasks/`)**  
+    Carpetas de salida de las skills `/c-spec`, `/c-plan` y `/c-task`. Se crean bajo demanda al generar el primer artefacto. Las plantillas viven dentro de cada skill.
+
+---
+
+## Flujo Spec-Driven (obligatorio para funcionalidades nuevas)
+
+```mermaid
+flowchart LR
+    A[Consultar memory y conventions] --> B["/c-spec: .agents/specs/nombre-spec.md"]
+    B --> C["/c-plan: .agents/plans/nombre-plan.md"]
+    C --> D["/c-task: .agents/tasks/nombre-task.md"]
+    D --> E["Ejecucion: marcar [x] tras flutter analyze y flutter test"]
+```
+
+| Skill | Responde | Plantilla | Salida |
+| :--- | :--- | :--- | :--- |
+| [`/c-spec`](./.agents/skills/c-spec/SKILL.md) | El QUE, agnostico a la tecnologia (HUs, pantallas, Gherkin) | [spec-template](./.agents/skills/c-spec/templates/spec-template.md) | `.agents/specs/<nombre>-spec.md` |
+| [`/c-plan`](./.agents/skills/c-plan/SKILL.md) | El COMO en Flutter (Screen/Page/Widget, modelos, rutas, estado), sin codigo de produccion | [plan-template](./.agents/skills/c-plan/templates/plan-template.md) | `.agents/plans/<nombre>-plan.md` |
+| [`/c-task`](./.agents/skills/c-task/SKILL.md) | Tareas atomicas con checkboxes `- [ ]` y verificacion | [task-template](./.agents/skills/c-task/templates/task-template.md) | `.agents/tasks/<nombre>-task.md` |
+
+Reglas del flujo:
+1. No modificar `lib/` sin una tarea respaldada por plan y spec; cada fase se confirma con el usuario antes de pasar a la siguiente.
+2. Una tarea se marca `- [x]` solo tras verificarla con `flutter analyze` y `flutter test` (o la verificacion indicada).
+3. Sin emojis en documentacion tecnica ni commits; usar diagramas Mermaid para flujos complejos.
+
 ---
 
 ## Directrices de Operacion para Agentes
