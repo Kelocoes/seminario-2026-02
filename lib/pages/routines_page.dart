@@ -117,6 +117,7 @@ class _RoutinesPageState extends State<RoutinesPage> {
           return RoutineCard(
             name: routine.name,
             description: routine.description,
+            fotoPath: routine.fotoPath,
             onTap: () => _openDetail(routine),
           );
         },
