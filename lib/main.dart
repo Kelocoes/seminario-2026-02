@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:seminario_2026_02/auth_gate.dart';
 import 'package:seminario_2026_02/routes/app_routes.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -23,8 +24,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: AppRoutes.login,
-      routes: AppRoutes.routes
+      home: const AuthGate(),
+      routes: AppRoutes.routes,
     );
   }
 }

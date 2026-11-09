@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:seminario_2026_02/routes/app_routes.dart';
+import 'package:seminario_2026_02/services/auth_service.dart';
 import 'package:seminario_2026_02/widgets/stat_item.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -28,7 +29,7 @@ class ProfilePage extends StatelessWidget {
         ),
         const SizedBox(height: 16.0),
         Text(
-          'Esteban Romero',
+          'Mi cuenta',
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
@@ -36,7 +37,7 @@ class ProfilePage extends StatelessWidget {
         ),
         const SizedBox(height: 4.0),
         Text(
-          'esteban.romero@u.icesi.edu.co',
+          AuthService().email ?? '',
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: Colors.grey[600],

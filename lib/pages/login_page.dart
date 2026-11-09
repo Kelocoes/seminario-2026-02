@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:seminario_2026_02/routes/app_routes.dart';
+import 'package:seminario_2026_02/services/auth_service.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -9,6 +10,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _servicio = AuthService();
+  bool _cargando = false;
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -19,10 +22,24 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void _login() {
-    debugPrint("Validando credenciales!");
-
-    Navigator.pushNamedAndRemoveUntil(context, AppRoutes.main, (route) => false);
+  Future<void> _enviar({required bool registro}) async {
+    setState(() => _cargando = true);
+    try {
+      final email = _usernameController.text.trim();
+      final password = _passwordController.text;
+      if (registro) {
+        await _servicio.registrar(email, password);
+      } else {
+        await _servicio.iniciarSesion(email, password);
+      }
+      // Sin Navigator: AuthGate cambia sola de pantalla.
+    } on AuthException catch (e) {
+      debugPrint('Error de autenticación: ${e.message}');
+    } catch (e) {
+      debugPrint('Error inesperado: $e');
+    } finally {
+      if (mounted) setState(() => _cargando = false);
+    }
   }
 
   @override
@@ -58,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
           TextField(
             controller: _usernameController,
             decoration: const InputDecoration(
-              labelText: 'Usuario o Correo',
+              labelText: 'Correo',
               prefixIcon: Icon(Icons.person_outline),
               border: OutlineInputBorder(),
             ),
@@ -74,13 +91,21 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           const SizedBox(height: 24.0),
-          ElevatedButton(
-            onPressed: _login,
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 14.0),
+          if (_cargando)
+            const Center(child: CircularProgressIndicator())
+          else ...[
+            ElevatedButton(
+              onPressed: () => _enviar(registro: false),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 14.0),
+              ),
+              child: const Text('Ingresar', style: TextStyle(fontSize: 16.0)),
             ),
-            child: const Text('Ingresar', style: TextStyle(fontSize: 16.0)),
-          ),
+            TextButton(
+              onPressed: () => _enviar(registro: true),
+              child: const Text('Crear cuenta'),
+            ),
+          ],
         ],
       ),
     );
