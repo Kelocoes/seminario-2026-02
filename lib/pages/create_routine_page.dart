@@ -1,7 +1,10 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:seminario_2026_02/model/exercise.dart';
 import 'package:seminario_2026_02/model/routine.dart';
 import 'package:seminario_2026_02/services/exercise_service.dart';
+import 'package:seminario_2026_02/services/photo_service.dart';
 import 'package:seminario_2026_02/services/routine_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -15,14 +18,33 @@ class CreateRoutinePage extends StatefulWidget {
 class _CreateRoutinePageState extends State<CreateRoutinePage> {
   final _exerciseService = ExerciseService();
   final _routineService = RoutineService();
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
-  final List<Exercise> _selectedExercises = [];
+  final _photoService = PhotoService();
+  final _nameController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  final _selectedExercises = <Exercise>[];
+  final picker = ImagePicker();
+
+  XFile? _selectedImage;
+  Uint8List? _selectedImageBytes;
 
   bool _loadingExercises = true;
   String? _exercisesError;
   List<Exercise> _availableExercises = [];
   bool _saving = false;
+
+  Future<void> _pickImage(ImageSource source) async {
+    final image = await picker.pickImage(
+      source: source,
+      imageQuality: 80,
+      maxWidth: 1200,
+    );
+
+    if (image != null) {
+      setState(() => _selectedImage = image);
+      _selectedImageBytes = await image.readAsBytes();
+      if (mounted) setState(() {});
+    }
+  }
 
   @override
   void initState() {
@@ -74,11 +96,16 @@ class _CreateRoutinePageState extends State<CreateRoutinePage> {
 
     setState(() => _saving = true);
     try {
+      final imageUrl = _selectedImage != null
+          ? _photoService.urlPublica(await _photoService.subir(_selectedImage!))
+          : null;
+
       final created = await _routineService.create(
         Routine(
           name: name,
           description: description,
           exercises: List<Exercise>.from(_selectedExercises),
+          photoPath: imageUrl,
         ),
       );
       if (!mounted) return;
@@ -117,6 +144,7 @@ class _CreateRoutinePageState extends State<CreateRoutinePage> {
             border: OutlineInputBorder(),
           ),
         ),
+        _imagePickerWidget(),
         const SizedBox(height: 24.0),
         Text(
           'Agregar Ejercicios Existentes',
@@ -178,5 +206,29 @@ class _CreateRoutinePageState extends State<CreateRoutinePage> {
           },
         ),
     ];
+  }
+
+  Widget _imagePickerWidget() {
+    return Column(
+      children: [
+        if (_selectedImageBytes != null) Image.memory(_selectedImageBytes!, height: 150),
+        Row(
+          children: [
+            TextButton(
+              onPressed: () => _pickImage(ImageSource.gallery),
+              child: const Text('Galería'),
+            ),
+            if (_selectedImage != null)
+              TextButton(
+                onPressed: () => setState(() {
+                  _selectedImage = null;
+                  _selectedImageBytes = null;
+                }),
+                child: const Text('Eliminar'),
+              ),
+          ],
+        ),
+      ],
+    );
   }
 }

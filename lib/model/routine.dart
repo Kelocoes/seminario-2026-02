@@ -5,12 +5,14 @@ class Routine {
   final String name;
   final String description;
   final List<Exercise> exercises;
+  final String? photoPath;
 
   const Routine({
     this.id,
     required this.name,
     required this.description,
     this.exercises = const [],
+    this.photoPath
   });
 
   factory Routine.fromMap(Map<String, dynamic> map) {
@@ -19,11 +21,12 @@ class Routine {
       id: map['id'] as int,
       name: map['name'] as String,
       description: map['description'] as String,
+      photoPath: map['photo_path'] as String,
       exercises: [
         for (final link in links) Exercise.fromMap(link['exercises']),
       ],
     );
   }
 
-  Map<String, dynamic> toMap() => {'name': name, 'description': description};
+  Map<String, dynamic> toMap() => {'name': name, 'description': description, 'photo_path': photoPath};
 }
