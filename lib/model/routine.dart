@@ -21,12 +21,12 @@ class Routine {
       id: map['id'] as int,
       name: map['name'] as String,
       description: map['description'] as String,
-      photoPath: map['photo_path'] as String,
+      photoPath: map['image_url'] as String?,
       exercises: [
         for (final link in links) Exercise.fromMap(link['exercises']),
       ],
     );
   }
 
-  Map<String, dynamic> toMap() => {'name': name, 'description': description, 'photo_path': photoPath};
+  Map<String, dynamic> toMap() => {'name': name, 'description': description, 'image_url': photoPath};
 }

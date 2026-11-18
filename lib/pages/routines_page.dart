@@ -38,6 +38,7 @@ class _RoutinesPageState extends State<RoutinesPage> {
       setState(() => _error = e.message);
     } catch (e) {
       if (!mounted) return;
+      debugPrint(e.toString());
       setState(() => _error = 'Sin conexión');
     } finally {
       if (mounted) setState(() => _loading = false);

@@ -2,7 +2,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PhotoService {
-  final _bucket = Supabase.instance.client.storage.from('ejercicios');
+  final _bucket = Supabase.instance.client.storage.from('routines');
 
   Future<String> subir(XFile foto) async {
     final bytes = await foto.readAsBytes();
